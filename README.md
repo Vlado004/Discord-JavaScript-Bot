@@ -6,12 +6,8 @@ JSBot.js is the main file with all the includes, connects etc. This is the file 
 functions.js is where all the functions (duh) are located which simplify discord.io-s functions
 blackjack.js and slots.js are mini games connected to the main file
 
-There is another file called info.js which consists of
-
-  module.exports = {
-
-  Discord_Token : "",
-
-  }
-  
-Where the "" indicated the place for your Token.
+To get all the vars at the beginning type into your console this
+-npm i fs
+-npm i mysql
+-npm i accounting
+-npm i cron
