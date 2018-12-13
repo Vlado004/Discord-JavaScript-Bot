@@ -7,6 +7,7 @@ functions.js is where all the functions (duh) are located which simplify discord
 blackjack.js and slots.js are mini games connected to the main file
 
 There is another file called info.js which consists of
+
   module.exports = {
 
   Discord_Token : "",
