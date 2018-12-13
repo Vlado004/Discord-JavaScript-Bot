@@ -1,13 +1,10 @@
 var Discord = require('discord.io');
 var functions = require("./functions.js");
 var info = require('./info.js');
-var colors = require('colours');
 var fs = require('fs');
 var mysql = require('mysql');
 var accounting = require('accounting');
 var CronJob = require('cron').CronJob;
-// var oneLinerJoke = require('one-liner-joke');
-// var accounting = require('accounting');
 
 var bot = new Discord.Client({
   token: info.Discord_Token,
@@ -25,7 +22,7 @@ var pool = mysql.createPool({
 });
 
 bot.on('ready', function(event) {
-  console.log(("Logged " + bot.username + " - (" + bot.id + ") in.").magenta);
+  console.log("Logged " + bot.username + " - (" + bot.id + ") in.");
 
   bot.setPresence({
     game: {
@@ -35,15 +32,9 @@ bot.on('ready', function(event) {
 
   bot.editUserInfo({
     username: "JavaScript Bot",
-    //avatar: require('fs').readFileSync('R:/Downloads/Slike/lirik.png', 'base64')
   })
 
 });
-
-
-eval(require('fs').readFileSync("slots.js") + '');
-eval(require('fs').readFileSync("blackjack.js") + '');
-// eval(require('fs').readFileSync("HiLo.js") + '');
 
 
 function sendMessage(channelID, message, bot) {
@@ -57,7 +48,7 @@ function sendMessage(channelID, message, bot) {
 
 
 bot.on('presence', function(user, userID, status, game, event) {
-  /*Dodavanje u SQL*/
+  /*Adding into SQL db*/
   pool.getConnection(function(err, connection) {
     connection.query("select * from users where user_id = ? ", [userID], function(err, rows, fields) {
 
@@ -71,7 +62,7 @@ bot.on('presence', function(user, userID, status, game, event) {
     });
     connection.release();
   });
-  /*Gotovo dodavanje*/
+  /*Done*/
 });
 
 
@@ -79,26 +70,28 @@ bot.on('presence', function(user, userID, status, game, event) {
 bot.on('disconnect', function() { bot.connect(); });
 
 
-/*Dodavanje bodova*/
+/*Adding points (every minute)*/
 var points = new CronJob('1 * * * * *', function() {
   var add_points = 10;
   functions.Update("update users set points = points+'" + add_points + "' where status = 'online' ", pool);
   var add_points = 3;
   functions.Update("update users set points = points+'" + add_points + "' where status = 'idle' ", pool);
-  var add_points = 1;
+  var add_points = 5;
   functions.Update("update users set points = points+'" + add_points + "' where status = 'dnd' ", pool);
 }, null, true, 'America/Los_Angeles');
 
 points.start();
+eval(require('fs').readFileSync("slots.js") + '');
+eval(require('fs').readFileSync("blackjack.js") + '');
+var prefix = "+";
 
-
-/*Poruke*/
+/*check messages*/
 bot.on('message', function(user, userID, channelID, message, event) {
   var msg_split = message.split(" ");
 
-  /*Mjenjanje igre*/
-  if (msg_split[0].toLowerCase() == "+play" && msg_split[1] != undefined && userID == '128941571155427339') {
-    var msg = message.replace("+play ", "");
+  /*changing current game*/
+  if (msg_split[0].toLowerCase() == prefix + "play" && msg_split[1] != undefined && userID == '128941571155427339') {
+    var msg = message.replace(prefix + "play ", "");
 
     bot.setPresence({
       game: {
@@ -110,37 +103,21 @@ bot.on('message', function(user, userID, channelID, message, event) {
   }
 
 
-  if (msg_split[0].toLowerCase() == "+help") {
+  if (msg_split[0].toLowerCase() == prefix + "help") {
     functions.sendMessage(channelID, 'Command list:\n' +
-      '**+Points** - Check your points.\n' +
-      '**+Tip <amount> <tag>** - Tip somebody some points.\n' +
-      '**+Ping** - A nice and calm round of ping pong.\n' +
-      '**+Rock|+Scissors|+Paper** - Play a round of Rock, Scissors or Paper\n' +
-      '**+Bj** - For more info about BlackJack\n' +
-      //'**+HoL** - For more info about High or Low\n' +
-      '**+Slots** - Minimum buy-in is 100 points\n' +
-      '**+Guess** - Guess the number.\n' //+
-      //'**+Poke <somebody> (optional message)** - poke someone\n' +
-      //'**+Guesspoke <somebody>** - if guessed right, you get points, if not, the poker gets. Easy\n' +
-      //'**+Mug <somebody>** - Mug some pleb.\n' +
-      //'**+BuyTicket** - To join the lottery, each ticket costs 5000 points, winners drawn every Monday, Wednesday and Saturday.\n' +
-      //'**+Uptime** - Check the bots Uptime.\n' +
-      //'**+Sing** - Some random songs.\n' +
-      //'**+Slap <somebody>** - self explainatory\n' +
-      //'**+Hug <somebody>** - be nice and share love\n' +
-      //'**+Dare <somebody>** - dare somebody\n' +
-      // '**+Ship** - Random couples. Random couples everywhere\n' +
-      //'**+Rate <somebody>** - make their day...or not. Depends\n' +
-      //'**+Pure <somebody>** - determine their pureness.\n' +
-      //'**+Use <somebody>** - Check somebodies usefulness\n' +
-      //'**+Worth <somebody>** - Check somebodies worth\n' +
-      //'**+Joke** - Crack some bad jokes.'
+      '**' + prefix + 'Points** - Check your points.\n' +
+      '**' + prefix + 'Tip <amount> <tag>** - Tip somebody some points.\n' +
+      '**' + prefix + 'Ping** - A nice and calm round of ping pong.\n' +
+      '**' + prefix + 'Rock|' + prefix + 'Scissors|' + prefix + 'Paper** - Play a round of Rock, Scissors or Paper\n' +
+      '**' + prefix + 'Bj** - For more info about BlackJack\n' +
+      '**' + prefix + 'Slots** - Minimum buy-in is 100 points\n' +
+      '**' + prefix + 'Guess** - Guess the number.\n'
       , bot);
   }
 
 
   /*Tips*/
-  if (msg_split[0].toLowerCase() == '+tip') {
+  if (msg_split[0].toLowerCase() == prefix + 'tip') {
     var points = parseInt(msg_split[1], 10);
 
     var allow = true;
@@ -208,17 +185,8 @@ bot.on('message', function(user, userID, channelID, message, event) {
   }
 
 
-  /*Logs of somebody
-  if (userID == "userid of the person") {
-      msg = event['d']['content'];
-      chan = event['d']['channel_id'];
-
-      functions.sendMessage("userid of the person", "Vlad said in <#" + chan + ">: " + msg, bot);
-  }*/
-
-
   /*Point check*/
-  if (msg_split[0].toLowerCase() == "+points") {
+  if (msg_split[0].toLowerCase() == prefix + "points") {
 
     pool.getConnection(function(err, connection) {
       connection.query("select * from users where user_id = ? ", [userID], function(err, rows, fields) {
@@ -229,12 +197,11 @@ bot.on('message', function(user, userID, channelID, message, event) {
       });
       connection.release();
     });
-    //functions.sendMessage('246232029195141120', '<@' + userID + '> did **+points**', bot);
   }
 
 
   /*Rock-Scissors-Paper*/
-  if (msg_split[0].toLowerCase() == "+rock" && msg_split[1] == undefined) {
+  if (msg_split[0].toLowerCase() == prefix + "rock" && msg_split[1] == undefined) {
     var rspChance = Math.floor((Math.random() * 9) + 1);
 
     if (rspChance <= 3) {
@@ -246,7 +213,7 @@ bot.on('message', function(user, userID, channelID, message, event) {
     }
   }
 
-  if (msg_split[0].toLowerCase() == "+scissors" && msg_split[1] == undefined) {
+  if (msg_split[0].toLowerCase() == prefix + "scissors" && msg_split[1] == undefined) {
     var rspChance = Math.floor((Math.random() * 9) + 1);
 
     if (rspChance <= 3) {
@@ -258,7 +225,7 @@ bot.on('message', function(user, userID, channelID, message, event) {
     }
   }
 
-  if (msg_split[0].toLowerCase() == "+paper" && msg_split[1] == undefined) {
+  if (msg_split[0].toLowerCase() == prefix + "paper" && msg_split[1] == undefined) {
     var rspChance = Math.floor((Math.random() * 9) + 1);
 
     if (rspChance <= 3) {
@@ -274,33 +241,27 @@ bot.on('message', function(user, userID, channelID, message, event) {
 
 
   /*A calming round of Ping Pong*/
-  if (msg_split[0].toLowerCase() == "+ping" && msg_split[1] == undefined) {
+  if (msg_split[0].toLowerCase() == prefix + "ping" && msg_split[1] == undefined) {
     var pingscore = Math.floor((Math.random() * 100) + 1);
         if (pingscore > 0 && pingscore <= 20) {
-          //Jos pogledat kako ovo napravit
-          //pool.getConnection(function(err, connection) {
-            //connection.query("select * from  pingpongphrases where Condition = ? ", [0], function(err, rows, fields) {
-              var pongReturnPoss = ["Get #NoScoped",
-                "GG-ez",
-                "Fucking easy.",
-                "Again",
-                "What a shame.",
-                "Is this easy mode?",
-                "Fucking #NerfThis",
-                "*domination*",
-                "*unstoppable*",
-                "Just like expected",
-                "Just as I calculated",
-                "Fuck yeah",
-                "Better luck next time",
-                "RIP",
-                "You could have done better",
-              ];
-              var pongReturn = pongReturnPoss[Math.floor(Math.random() * pongReturnPoss.length)];
-              var pongReturnFin = "You lost. " + pongReturn;
-            //});
-            //connection.release();
-          //});
+          var pongReturnPoss = ["Get #NoScoped",
+            "GG-ez",
+            "Fucking easy.",
+            "Again",
+            "What a shame.",
+            "Is this easy mode?",
+            "Fucking #NerfThis",
+            "*domination*",
+            "*unstoppable*",
+            "Just like expected",
+            "Just as I calculated",
+            "Fuck yeah",
+            "Better luck next time",
+            "RIP",
+            "You could have done better",
+          ];
+          var pongReturn = pongReturnPoss[Math.floor(Math.random() * pongReturnPoss.length)];
+          var pongReturnFin = "You lost. " + pongReturn;
         } else if (pingscore > 20 && pingscore <= 40) {
           var pongReturnPoss = ["#Rigged",
             "Wat",
@@ -328,29 +289,8 @@ bot.on('message', function(user, userID, channelID, message, event) {
   }
 
 
-
-
-  /*Dunno*/
-  var message = message.toLowerCase();
-  var message_sent = user + " -> " + message;
-
-
-  /*Picture change*/
-  if (msg_split[0].toLowerCase() == "!changepic" && msg_split[1] != undefined && userID == "128941571155427339") {
-    var pic = message.replace("!changepic ", "")
-
-    // bot.editUserInfo({
-    //   avatar: require('fs').readFileSync('./' + pic + '.png', 'base64')
-    // })
-
-    functions.sendMessage('128941571155427339', "The picture was changed to " + pic + ".", bot);
-  }
-
-
-
-
   /*Guess the number minigame*/
-  if (msg_split[0].toLowerCase() == "+guess") {
+  if (msg_split[0].toLowerCase() == prefix + "guess") {
 
     if (msg_split[1] == undefined || msg_split[2] == undefined) {
       /*No bet so explanation*/
@@ -358,7 +298,7 @@ bot.on('message', function(user, userID, channelID, message, event) {
       functions.sendMessage(channelID, "<@" + userID + ">, this is a game of guess where you have to guess a number from 1 to 100. \n" +
         "Depending on how close you come, the number of points you get will increase.\n" +
         "The minimum amout you can bet is 10 points.\n" +
-        "You bet with **+guess <bet> <guess>**", bot);
+        "You bet with **" + prefix + "guess <bet> <guess>**", bot);
 
       /*Bet and guess, here we go*/
     } else {
