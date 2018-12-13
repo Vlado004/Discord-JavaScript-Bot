@@ -12,7 +12,7 @@ var bot = new Discord.Client({
 });
 
 
-console.log("Launching bot...".yellow);
+console.log("Launching bot...");
 
 var pool = mysql.createPool({
   host: '127.0.0.1',
