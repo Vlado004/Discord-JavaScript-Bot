@@ -5,7 +5,7 @@ bot.on('message', function(user, userID, channelID, message, event) {
 
 
 
-    if (msg_split[0].toLowerCase() == "+slots") {
+    if (msg_split[0].toLowerCase() == prefix + "slots") {
 
 
         /**Checking if enough points**/
@@ -35,43 +35,43 @@ bot.on('message', function(user, userID, channelID, message, event) {
                     if (leftSign == middleSign && middleSign == rightSign) {
 
                         if (middleSign == ":spades:") {
-                            // functions.Update("update users set points = points + 250 where user_id = '" + userID + "' ", pool);
+                             functions.Update("update users set points = points + 250 where user_id = '" + userID + "' ", pool);
                             outcome = "You got 250 points.";
 
                         }
 
                         if (middleSign == ":clubs:") {
-                            // functions.Update("update users set points = points + 250 where user_id = '" + userID + "' ", pool);
+                             functions.Update("update users set points = points + 250 where user_id = '" + userID + "' ", pool);
                             outcome = "You got 250 points.";
 
                         }
 
                         if (middleSign == ":hearts:") {
-                            // functions.Update("update users set points = points + 250 where user_id = '" + userID + "' ", pool);
+                             functions.Update("update users set points = points + 250 where user_id = '" + userID + "' ", pool);
                             outcome = "You got 250 points.";
 
                         }
 
                         if (middleSign == ":diamonds:") {
-                            // functions.Update("update users set points = points + 250 where user_id = '" + userID + "' ", pool);
+                             functions.Update("update users set points = points + 250 where user_id = '" + userID + "' ", pool);
                             outcome = "You got 250 points.";
 
                         }
 
                         if (middleSign == ":large_orange_diamond:") {
-                            // functions.Update("update users set points = points + 500 where user_id = '" + userID + "' ", pool);
+                             functions.Update("update users set points = points + 500 where user_id = '" + userID + "' ", pool);
                             outcome = "You got 500 points.";
 
                         }
 
                         if (middleSign == ":large_blue_diamond:") {
-                            // functions.Update("update users set points = points + 500 where user_id = '" + userID + "' ", pool);
+                             functions.Update("update users set points = points + 500 where user_id = '" + userID + "' ", pool);
                             outcome = "You got 500 points.";
 
                         }
 
                         if (middleSign == ":100:") {
-                            // functions.Update("update users set points = points + 1000 where user_id = '" + userID + "' ", pool);
+                             functions.Update("update users set points = points + 1000 where user_id = '" + userID + "' ", pool);
                             outcome = "You got 1000 points.";
 
                         }
@@ -79,43 +79,43 @@ bot.on('message', function(user, userID, channelID, message, event) {
                     } else if ((middleSign == leftSign) || (middleSign == rightSign)) {
 
                         if (middleSign == ":spades:") {
-                            // functions.Update("update users set points = points + 50 where user_id = '" + userID + "' ", pool);
+                             functions.Update("update users set points = points + 50 where user_id = '" + userID + "' ", pool);
                             outcome = "You got 50 points.";
 
                         }
 
                         if (middleSign == ":clubs:") {
-                            // functions.Update("update users set points = points + 50 where user_id = '" + userID + "' ", pool);
+                             functions.Update("update users set points = points + 50 where user_id = '" + userID + "' ", pool);
                             outcome = "You got 50 points.";
 
                         }
 
                         if (middleSign == ":hearts:") {
-                            // functions.Update("update users set points = points + 50 where user_id = '" + userID + "' ", pool);
+                             functions.Update("update users set points = points + 50 where user_id = '" + userID + "' ", pool);
                             outcome = "You got 50 points.";
 
                         }
 
                         if (middleSign == ":diamonds:") {
-                            // functions.Update("update users set points = points + 50 where user_id = '" + userID + "' ", pool);
+                             functions.Update("update users set points = points + 50 where user_id = '" + userID + "' ", pool);
                             outcome = "You got 50 points.";
 
                         }
 
                         if (middleSign == ":large_orange_diamond:") {
-                            // functions.Update("update users set points = points + 150 where user_id = '" + userID + "' ", pool);
+                             functions.Update("update users set points = points + 150 where user_id = '" + userID + "' ", pool);
                             outcome = "You got 150 points.";
 
                         }
 
                         if (middleSign == ":large_blue_diamond:") {
-                            // functions.Update("update users set points = points + 150 where user_id = '" + userID + "' ", pool);
+                             functions.Update("update users set points = points + 150 where user_id = '" + userID + "' ", pool);
                             outcome = "You got 150 points.";
 
                         }
 
                         if (middleSign == ":100:") {
-                            // functions.Update("update users set points = points + 250 where user_id = '" + userID + "' ", pool);
+                             functions.Update("update users set points = points + 250 where user_id = '" + userID + "' ", pool);
                             outcome = "You got 250 points.";
 
                         }
