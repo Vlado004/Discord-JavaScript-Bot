@@ -1,17 +1,17 @@
-console.log("Blackjack - loaded");
+console.log("Blackjack - loaded.");
 
 bot.on('message', function(user, userID, channelID, message, event) {
     var msg_split = message.split(" ");
 
 
     /** Start of blackJack**/
-    if (msg_split[0].toLowerCase() == '+bj') {
+    if (msg_split[0].toLowerCase() == prefix + 'bj') {
 
         if (msg_split[1] == undefined) {
             functions.sendMessage(channelID, 'Command list for **BlackJack** :\n' +
-                '**+bj create <Value of points you want to gamble>** - Create a table.\n' +
-                '**+bj hit** - Get another card.\n' +
-                '**+bj stand** - Stop on your curret card.', bot);
+                '**' + prefix + 'bj create <Value of points you want to gamble>** - Create a table.\n' +
+                '**' + prefix + 'bj hit** - Get another card.\n' +
+                '**' + prefix + 'bj stand** - Stop on your curret card.', bot);
         } else {
 
             /** BlackJack Ace value 1**/
