@@ -17,6 +17,13 @@ module.exports = {
     });
   },
 
+  sendMessage: function(channelID, message, bot) {
+    bot.sendMessage({
+      to: channelID,
+      message: message
+    });
+  },
+
 
   rpcForFood: function(food, rpc, startTimestamp) {
 
@@ -97,11 +104,10 @@ module.exports = {
   },
 
   isDecimal: function(int) {
-    if (int % 1 != 0) {
+    if (int % 1 == 0) {
       return false;
-    } else {
-      return true;
     }
+    return true;
 
   },
 
@@ -122,65 +128,17 @@ module.exports = {
     });
   },
 
-  hasPerms: function(role, perm, client) {
 
-
-
-    try {
-
-
-
-      if (!role) {
-        role = '289347895789345997893457893';
-      }
-
-
-      if (role == undefined) {
-        return false;
-      } else {
-
-        var perm_ladder = {
-
-
-          '238950238373543936': {
-            permissions: ['ship_admin']
-          },
-
-          '237867854094008320': {
-            permissions: ['ship_admin']
-          },
-
-          '237867854094008320': {
-            permissions: ['ship_admin']
-          }
-
-
-
+  hasPerms: function(roles) {
+    var permRoles = ['' /*owner*/, '' /*Enforcer*/, '' /*Minions*/];
+    for (var i = 0; i < roles.length; i++) {
+      for (var j = 0; j < permRoles.length; j++) {
+        if (roles[i] == permRoles[j]) {
+          return true;
         }
-
-
-        if (perm_ladder[role] != undefined) {
-
-          if (perm_ladder[role]['permission'].indexOf(perm) > -1) {
-            return true;
-          } else {
-            return false;
-          }
-
-
-        } else {
-          return false;
-        }
-
       }
-
-    } catch (e) {
-      console.log("error caught");
-      console.log(e);
-
-
     }
-
+    return false;
   },
 
 
